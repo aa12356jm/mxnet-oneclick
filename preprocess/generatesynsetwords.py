@@ -6,7 +6,7 @@ def generatesyssetwords(datadir):
     sysnsetfile=open(datadir+'/'+'synset.txt','w')
     for sub in subdir:
         if os.path.isdir(datadir+'/'+sub):
-            print sub
+            print (sub)
             sysnsetfile.writelines(sub+'\n')
 
 def main():
