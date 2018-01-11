@@ -50,8 +50,8 @@ def make_list(args):
         random.shuffle(image_list)
     N = len(image_list)
     chunk_size = (N + args.chunks - 1) / args.chunks
-    for i in xrange(args.chunks):
-        chunk = image_list[i * chunk_size:(i + 1) * chunk_size]
+    for i in range(args.chunks):
+        chunk = image_list[i * int(chunk_size):(i + 1) * int(chunk_size)]
         if args.chunks > 1:
             str_chunk = '_%d' % i
         else:
@@ -102,7 +102,7 @@ def image_encode(args, item, q_out):
     try:
         s = mx.recordio.pack_img(header, img, quality=args.quality, img_fmt=args.encoding)
         q_out.put((s, item))
-    except Exception, e:
+    except Exception as e:
         print('pack_img error:', item[1], e)
         return
 
@@ -135,7 +135,7 @@ def write_worker(q_out, fname, working_dir):
 
         if count % 1000 == 0:
             cur_time = time.time()
-            print('time:', cur_time - pre_time, ' count:', count)
+            print('time:', str(cur_time - pre_time).encode("utf-8").decode("ascii"), ' count:', count)
             pre_time = cur_time
         count += 1
     #os.rename(fname+'.tmp', fname)
