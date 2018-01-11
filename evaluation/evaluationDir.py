@@ -53,7 +53,7 @@ def testdir(datadir):
     errorstatics=[]
     for sub in subdir:
         if os.path.isdir(datadir+'/'+sub):
-            print sub+":"
+            print (sub+":")
             files=os.listdir(datadir+'/'+sub)
             errorofeverychar=0
             for file in files:
@@ -63,7 +63,7 @@ def testdir(datadir):
                 indexmax=prediction.argmax()
                 label=synset[prediction.argmax()]
                 if(label!=sub):
-                    print sub+"/"+file+"->"+str(label)
+                    print (sub+"/"+file+"->"+str(label))
                     errorofeverychar=errorofeverychar+1
                     if not os.path.exists(errordir+'/'+sub):
                         os.mkdir(errordir+'/'+sub)
@@ -71,11 +71,11 @@ def testdir(datadir):
                     shutil.copy(datadir+'/'+sub+"/"+file,dstpath)
             allcharerrors=allcharerrors+errorofeverychar
             errorstatics.append(sub+":"+str(errorofeverychar))
-    print allcharerrors,allcharcounts
-    print allcharerrors*100.0/allcharcounts
-    print "erros analysis:"
+    print (allcharerrors,allcharcounts)
+    print (allcharerrors*100.0/allcharcounts)
+    print ("erros analysis:")
     for es in errorstatics:
-        print es
+        print (es)
 def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
