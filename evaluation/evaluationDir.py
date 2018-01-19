@@ -12,15 +12,16 @@ from sklearn import metrics
 logger = logging.getLogger()
 logger.setLevel(logging.DEBUG)
 
-testdir="../platechars"
+#testdir="../platechars"
+testdir="../data"
 errordir="error"
 prefix = testdir+"/lenetweights"
-num_round = 200
+num_round = 10
 model = mx.model.FeedForward.load(prefix, num_round, ctx=mx.gpu(), numpy_batch_size=1)
 mean_img = mx.nd.load(testdir+"/mean.bin")["mean_img"]
 synset = [l.strip() for l in open(testdir+'/synset.txt').readlines()]
 batch_size=1
-data_shape = (3, 20, 20)
+data_shape = (3, 256, 256)
 
 def PreprocessImage(path, show_img=False):
     # load image
@@ -80,7 +81,8 @@ def main():
     parser = argparse.ArgumentParser(
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,
         description='generate synsetwords')
-    parser.add_argument('--datadir', type=str, default='../platechars',help='path to folder that contain datasets.')
+    #parser.add_argument('--datadir', type=str, default='../platechars',help='path to folder that contain datasets.')
+    parser.add_argument('--datadir', type=str, default='../data',help='path to folder that contain datasets.')
     args = parser.parse_args()
     testdir(args.datadir)
 if __name__=="__main__":

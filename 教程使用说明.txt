@@ -1,0 +1,16 @@
+1，将要分类的图像放入data文件夹中，每个类别放在一个文件夹中，文件夹名字就是类别名；
+
+2，双击preprocess.bat，会在data文件夹中生成几个文件:
+    data_train.rec,data_val.rec,data_test.rec  这三个文件是由图像生成的，分别是训练，验证，测试
+    data_train.lst,data_val.lst,data_test.lst  这三个文件分别是训练，验证，测试图像的文件list，分别记录哪位文件属于他们；
+    synset.txt，是类别名，也就是这三个文件夹输入属于哪一类，由于这里就是使用文件夹名进行分类的，所以这里面保存的就是三个文件夹名
+    mean.bin这个是图像的均值文件，在c++中调用时，可以直接当做mean_224.nd这个文件使用。
+
+3，双击train.bat，开始进行训练，可以在train/train.py中调整训练参数和网络结构
+   训练完成后会保存模型文件.params和网络文件.json到data文件夹下。
+
+4，最后双击evaluation.bat文件，会对图像进行测试，将所有分类错误的图像归类到evaluation/error文件夹下
+
+5，当训练完成的模型文件在c++中使用时，只需要.params,.json，synset.txt,mean.bin这四个文件，具体可以参考GitHub中的
+mxnet_vs2015库，注意在c++中使用时，需要输入图像大小，这个图像大小就是训练时候的图像大小，比如训练时候使用299x299，
+则测试的时候，c++中也要使用299x299,还有图像均值，可以使用github中的compute_mean_and_variance.py计算训练集的均值即可。

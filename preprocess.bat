@@ -1,5 +1,5 @@
 @echo off
-set datasetname=platechars
+set datasetname=data
 echo "Generating lst"
 python preprocess/im2rec.py %datasetname%/%datasetname% %datasetname% --recursive=True --list=True
 echo "Generating rec"

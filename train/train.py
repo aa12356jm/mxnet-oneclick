@@ -1,8 +1,14 @@
 ﻿import mxnet as mx
 import logging
+import inception_v4 as inceptionV4
+import inception_v3 as inceptionV3
+import win_unicode_console
 
-datasetname="chars"
-datadir="../platechars"
+win_unicode_console.enable()
+#datasetname="chars"
+#datadir="../platechars"
+datasetname="data"
+datadir="../data"
 
 def get_lenet1():
     ## define lenet
@@ -49,31 +55,32 @@ def get_lenet():
 
 
 def main():
-    batch_size=1000
-    num_epoch = 200
+    batch_size= 8
+    num_epoch = 10
     num_gpus = 1
     logging.basicConfig(level=logging.DEBUG)
     gpus = [mx.gpu(i) for i in range(num_gpus)]
-    lenet=get_lenet()
-    model = mx.model.FeedForward(ctx=gpus, symbol=lenet, num_epoch=num_epoch,
+    #inception=inceptionV4.get_symbol(3)
+    inception = inceptionV3.get_symbol(3)
+    model = mx.model.FeedForward(ctx=gpus, symbol=inception, num_epoch=num_epoch,
                                      learning_rate=0.01, momentum=0.9, wd=0.0001,
                                      initializer=mx.init.Uniform(0.07))
     train_dataiter = mx.io.ImageRecordIter(
             path_imgrec=datadir+"/"+datasetname+"_train.rec",
             mean_img=datadir+"/mean.bin",
-            rand_crop=True,
+            rand_crop=False,
             rand_mirror=True,
-            data_shape=(3,20,20),
+            data_shape=(3,299,299),
             batch_size=batch_size,
-            preprocess_threads=1)
+            preprocess_threads=2)
     test_dataiter = mx.io.ImageRecordIter(
             path_imgrec=datadir+"/"+datasetname+"_val.rec",
             mean_img=datadir+"/mean.bin",
             rand_crop=False,
             rand_mirror=False,
-            data_shape=(3,20,20),
+            data_shape=(3,299,299),
             batch_size=batch_size,
-            preprocess_threads=1)
+            preprocess_threads=2)
     model.fit(X=train_dataiter, eval_data=test_dataiter,
               batch_end_callback=mx.callback.Speedometer(100))
     model.save(datadir+'/lenetweights',num_epoch)
