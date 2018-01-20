@@ -3,3 +3,8 @@ preprocess/*.pyc
 platechars/
 figures/
 platechars.zip
+/caffe
+/data
+/gluon_dog
+/gluon
+/evaluation/error
